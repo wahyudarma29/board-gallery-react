@@ -2,6 +2,7 @@ import { Menu, Group, Center, Burger, Container, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 import classes from "./HeaderMenu.module.css";
+import { Outlet } from "react-router-dom";
 
 const links = [{ link: "/board/create", label: "Create Post" }];
 
@@ -51,23 +52,33 @@ export default function LayoutMain() {
   });
 
   return (
-    <header className={classes.header}>
-      <Container size="md">
-        <div className={classes.inner}>
-          <Text
-            size="xl"
-            fw={900}
-            variant="gradient"
-            gradient={{ from: "rgba(0, 0, 0, 1)", to: "grape", deg: 108 }}
-          >
-            Keyboard Gallery
-          </Text>
-          <Group gap={5} visibleFrom="sm">
-            {items}
-          </Group>
-          <Burger opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
-        </div>
-      </Container>
-    </header>
+    <>
+      <header className={classes.header}>
+        <Container size="md">
+          <div className={classes.inner}>
+            <Text
+              size="xl"
+              fw={900}
+              variant="gradient"
+              gradient={{ from: "rgba(0, 0, 0, 1)", to: "grape", deg: 108 }}
+            >
+              Keyboard Gallery
+            </Text>
+            <Group gap={5} visibleFrom="sm">
+              {items}
+            </Group>
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              size="sm"
+              hiddenFrom="sm"
+            />
+          </div>
+        </Container>
+      </header>
+      <main>
+        <Outlet />
+      </main>
+    </>
   );
 }
