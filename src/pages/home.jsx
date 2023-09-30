@@ -1,4 +1,3 @@
-import cx from "clsx";
 import {
   Title,
   Text,
@@ -8,91 +7,83 @@ import {
   SimpleGrid,
   Card,
   Image,
+  Flex,
 } from "@mantine/core";
-import classes from "./HomeHero.module.css";
+import heroClasses from "./HomeHero.module.css";
+import cardClasses from "./Card.module.css";
+import { NavLink, useLoaderData } from "react-router-dom";
 
-const mockdata = [
-  {
-    title: "Top 10 places to visit in Norway this summer",
-    image:
-      "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80",
-    date: "August 18, 2022",
-  },
-  {
-    title: "Best forests to visit in North America",
-    image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80",
-    date: "August 27, 2022",
-  },
-  {
-    title: "Hawaii beaches review: better than you think",
-    image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80",
-    date: "September 9, 2022",
-  },
-  {
-    title: "Mountains at night: 12 best locations to enjoy the view",
-    image:
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80",
-    date: "September 12, 2022",
-  },
-];
+export async function loader() {
+  const response = await fetch("http://localhost:3000/api/");
+  const boards = await response.json();
+
+  return {
+    boards,
+  };
+}
 
 export default function PageHome() {
+  const data = useLoaderData();
+
   const linkProps = {
     href: "https://mantine.dev",
     target: "_blank",
     rel: "noopener noreferrer",
   };
 
-  const cards = mockdata.map((article) => (
-    <Card withBorder radius="md" className={classes.card} key={article.title}>
+  const cards = data.boards.map((board) => (
+    <Card withBorder radius="md" className={cardClasses.card} key={board.name}>
       <Card.Section>
         <a {...linkProps}>
-          <Image src="https://i.imgur.com/Cij5vdL.png" height={180} />
+          <Image
+            src="https://www.reddit.com/media?url=https%3A%2F%2Fi.redd.it%2Fzx3qmy88dkv51.jpg&rdt=61505"
+            height={180}
+          />
         </a>
       </Card.Section>
 
-      <Text className={classes.title} component="a" {...linkProps}>
-        {article.title}
+      <Text className={cardClasses.title} component="a" {...linkProps}>
+        {board.name}
       </Text>
 
       <Text fz="sm" c="dimmed" lineClamp={4}>
-        {article.title}
+        {board.desc}
       </Text>
+
+      <Flex>
+        <NavLink to={`/board/${board.id}/detail`}>
+          <Button mt="sm">View Post</Button>
+        </NavLink>
+      </Flex>
     </Card>
   ));
 
   return (
     <>
-      <div className={classes.wrapper}>
+      <div className={heroClasses.wrapper}>
         <Overlay color="#000" opacity={0.65} zIndex={1} />
 
-        <div className={classes.inner}>
-          <Title className={classes.title}>
+        <div className={heroClasses.inner}>
+          <Title className={heroClasses.title}>
             Share your boards to the world{" "}
-            <Text component="span" inherit className={classes.highlight}>
+            <Text component="span" inherit className={heroClasses.highlight}>
               for everyone to see!
             </Text>
           </Title>
 
           <Container size={640}>
-            <Text size="lg" className={classes.description}>
-              "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
-              consectetur, adipisci velit..."
+            <Text size="lg" className={heroClasses.description}>
+              Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
+              consectetur, adipisci velit...
             </Text>
           </Container>
 
-          <div className={classes.controls}>
-            <Button className={classes.control} variant="white" size="lg">
-              Get started
-            </Button>
-            <Button
-              className={cx(classes.control, classes.secondaryControl)}
-              size="lg"
-            >
-              Live demo
-            </Button>
+          <div className={heroClasses.controls}>
+            <NavLink to="/board/create">
+              <Button className={heroClasses.control} variant="white" size="lg">
+                Create your post
+              </Button>
+            </NavLink>
           </div>
         </div>
       </div>
