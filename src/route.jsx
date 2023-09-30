@@ -1,10 +1,12 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import LayoutMain from "./layouts/main";
 
-import PageHome from "./pages/home";
+import PageHome, { loader as loaderBoardList } from "./pages/home";
 import PageBoardCreate from "./pages/board/create";
-import PageBoardDetail from "./pages/board/detail";
-import PageBoardEdit from "./pages/board/edit";
+import PageBoardDetail, {
+  loader as loaderBoardDetail,
+} from "./pages/board/detail";
+import PageBoardEdit, { loader as loaderBoardEdit } from "./pages/board/edit";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <PageHome />,
+        loader: loaderBoardList,
       },
       {
         path: "/board",
@@ -22,6 +25,7 @@ const router = createBrowserRouter([
           {
             path: ":id/detail",
             element: <PageBoardDetail />,
+            loader: loaderBoardDetail,
           },
           {
             path: "create",
@@ -30,6 +34,7 @@ const router = createBrowserRouter([
           {
             path: ":id/edit",
             element: <PageBoardEdit />,
+            loader: loaderBoardEdit,
           },
         ],
       },
