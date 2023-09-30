@@ -1,0 +1,14 @@
+.card {
+    position: relative;
+    background-color: var(--mantine-color-body);
+  }
+  
+  .title {
+    display: block;
+    margin-top: var(--mantine-spacing-md);
+    margin-bottom: 5px;
+  }
+  
+  .footer {
+    margin-top: var(--mantine-spacing-md);
+  }
